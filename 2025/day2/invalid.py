@@ -1,7 +1,7 @@
 ##problem:find the invalid ids from the given range with pattern matching that made with twice or trice
 
 
-with open("sample.txt", "r") as f:
+with open("input.txt", "r") as f:
     inputs = f.read().strip().split(",")
 
 def create_range(inrange):
@@ -15,23 +15,36 @@ def digits(n):
         dg.append(n%10)
         n//=10
     return dg[::-1] # reverse the list
+def check(lis,offset):
+    i=1
+    while i*offset<len(lis):
+        if lis[:offset]!=lis[i*offset:(i+1)*offset]:
+            return False
+        i+=1
+    return True
+
+
 
 def part2(num):
     lis=digits(num)
+    if len(lis)>=2 and lis[:1]==lis[-1:]:
+        return check(lis,1)
+    if len(lis)%2==0 and len(lis)>=4 and lis[:2]==lis[-2:]:
+        offset=2
+        return check(lis,offset)
+    if len(lis)%3==0 and len(lis)>=6 and lis[:3]==lis[-3:] :
+        offset=3
+        return check(lis,offset)
 
-    
-    offset=len(lis)//3 
-  #  if offset==1:
-  #     return lis[:offset]==lis[offset:2*offset]==lis[2*offset:3*offset]  
-  #  
-  #  if offset==2:
-  #     return lis[:offset]==lis[offset:2*offset]==lis[2*offset:3*offset]  
-  #  if offset==3:
-    if offset !=0:
-      return lis[:offset]==lis[offset:2*offset]==lis[2*offset:3*offset]  
-     
-   
-#use get_invds by passing list of nums not use pattern_match directly
+    if len(lis)%4==0 and len(lis)>=8 and lis[:4]==lis[-4:]:
+        offset=4
+        return check(lis,offset)
+    return False
+
+
+
+
+
 def pattern_match(num):
     lis=digits(num)
     mid=len(lis)//2
@@ -55,4 +68,3 @@ sum=0
 for x in range(len(flat)):
     sum+=flat[x]
 print(sum);
-print(part2(2121212121))
